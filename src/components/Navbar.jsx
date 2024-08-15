@@ -1,11 +1,14 @@
+import { useContext } from "react";
 import { Link } from "react-router-dom";
+import { AuthContext } from "../provider/FirebaseProvider";
 
 const Navbar = () => {
+    const { user, logout } = useContext(AuthContext)
+
     const navLinks = <>
         <Link to="/" className="text-base font-medium mr-12 transition-all duration-75 hover:border-b-2 border-red-400">Home</Link>
         <Link className="text-base font-medium mr-12 transition-all duration-75 hover:border-b-2 border-red-400">About</Link>
         <Link className="text-base font-medium mr-12 transition-all duration-75 hover:border-b-2 border-red-400">Contact</Link>
-        <Link to="/login" className="text-base font-medium mr-12 transition-all duration-75 hover:border-b-2 border-red-400">Login</Link>
     </>
     return (
         <div>
@@ -40,21 +43,25 @@ const Navbar = () => {
                     </ul>
                 </div>
                 <div className="navbar-end">
-                    <div className="dropdown dropdown-end">
-                        <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
-                            <div className="w-10 rounded-full">
-                                <img
-                                    alt="Tailwind CSS Navbar component"
-                                    src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
+                    {
+                        user ? <div className="dropdown dropdown-end">
+                            <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
+                                <div className="w-10 rounded-full">
+                                    <img
+                                        alt="photo"
+                                        src={user?.photoURL} />
+                                </div>
                             </div>
-                        </div>
-                        <ul
-                            tabIndex={0}
-                            className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow">
-                            <li><a>Name</a></li>
-                            <li><a>Logout</a></li>
-                        </ul>
-                    </div>
+                            <ul
+                                tabIndex={0}
+                                className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow">
+                                <li><a>{user?.displayName}</a></li>
+                                <li><a onClick={logout}>Logout</a></li>
+                            </ul>
+                        </div> : <Link to="/login" className="btn bg-red-400">Login</Link>
+                    }
+
+
                 </div>
             </div>
         </div>
