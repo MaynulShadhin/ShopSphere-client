@@ -1,8 +1,9 @@
+import ProductCards from "../components/ProductCards";
 
 const Home = () => {
     return (
-        <div>
-            <h2>I am Home</h2>
+        <div className="container mx-auto">
+            <ProductCards></ProductCards>
         </div>
     );
 };
