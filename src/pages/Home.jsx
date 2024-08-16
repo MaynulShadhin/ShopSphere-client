@@ -25,11 +25,11 @@ const Home = () => {
 
     useEffect(() => {
         const getCount = async () => {
-            const { data } = await axios(`${import.meta.env.VITE_API_URL}/products-count`);
+            const { data } = await axios(`${import.meta.env.VITE_API_URL}/products-count?brand=${brandFilter}&category=${categoryFilter}&priceRange=${priceRangeFilter}`);
             setCount(data.count);
         }
         getCount();
-    }, []);
+    }, [brandFilter, categoryFilter, priceRangeFilter]);
 
     const numberOfPages = Math.ceil(count / itemsPerPage);
     const pages = [...Array(numberOfPages).keys()].map(element => element + 1);
@@ -39,16 +39,19 @@ const Home = () => {
     };
 
     const handleBrandFilter = (brand) => {
+        setCurrentPage(1)
         setBrandFilter(brand);
         setSelectedBrand(brand || 'Brand');
     };
 
     const handleCategoryFilter = (category) => {
+        setCurrentPage(1)
         setCategoryFilter(category);
         setSelectedCategory(category || 'Category');
     };
 
     const handlePriceRangeFilter = (priceRange) => {
+        setCurrentPage(1)
         setPriceRangeFilter(priceRange);
         setSelectedPriceRange(priceRange || 'Price Range');
     };
@@ -119,7 +122,7 @@ const Home = () => {
             </div>
 
             {/* product cards */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {
                     products.map(item => <ProductCard key={item?._id} item={item}></ProductCard>)
                 }
