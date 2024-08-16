@@ -7,30 +7,33 @@ const Home = () => {
     const [itemsPerPage, setItemsPerPage] = useState(6);
     const [count, setCount] = useState(0);
     const [currentPage, setCurrentPage] = useState(1);
-    const [categoryFilter, setCategoryFilter] = useState('')
+    const [brandFilter, setBrandFilter] = useState('');
+    const [categoryFilter, setCategoryFilter] = useState('');
+    const [priceRangeFilter, setPriceRangeFilter] = useState('');
 
     useEffect(() => {
         const getData = async () => {
-            const { data } = await axios(`${import.meta.env.VITE_API_URL}/all-products?page=${currentPage}&size=${itemsPerPage}&filter=`)
-            setProducts(data)
+            const query = `page=${currentPage}&size=${itemsPerPage}&brand=${brandFilter}&category=${categoryFilter}&priceRange=${priceRangeFilter}`;
+            const { data } = await axios(`${import.meta.env.VITE_API_URL}/all-products?${query}`);
+            setProducts(data);
         }
-        getData()
-    }, [currentPage, itemsPerPage])
+        getData();
+    }, [currentPage, itemsPerPage, brandFilter, categoryFilter, priceRangeFilter]);
+
     useEffect(() => {
         const getCount = async () => {
-            const { data } = await axios(`${import.meta.env.VITE_API_URL}/products-count`)
-            setCount(data.count)
+            const { data } = await axios(`${import.meta.env.VITE_API_URL}/products-count`);
+            setCount(data.count);
         }
-        getCount()
-    }, [])
+        getCount();
+    }, []);
 
-    const numberOfPages = Math.ceil(count / itemsPerPage)
-    const pages = [...Array(numberOfPages).keys()].map(element => element + 1)
+    const numberOfPages = Math.ceil(count / itemsPerPage);
+    const pages = [...Array(numberOfPages).keys()].map(element => element + 1);
 
-    //pagination button control
     const handlePaginationButton = (v) => {
-        setCurrentPage(v)
-    }
+        setCurrentPage(v);
+    };
 
     return (
         <div className="container mx-auto">
@@ -47,26 +50,49 @@ const Home = () => {
                 <div className="dropdown">
                     <div tabIndex={0} role="button" className="btn m-1">Brands</div>
                     <ul tabIndex={0} className="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
-                        <li><a>Item 1</a></li>
-                        <li><a>Item 2</a></li>
+                        <li><a onClick={() => setBrandFilter('Samsung')}>Samsung</a></li>
+                        <li><a onClick={() => setBrandFilter('Microsoft')}>Microsoft</a></li>
+                        <li><a onClick={() => setBrandFilter('Google')}>Google</a></li>
+                        <li><a onClick={() => setBrandFilter('Apple')}>Apple</a></li>
+                        <li><a onClick={() => setBrandFilter('Garmin')}>Garmin</a></li>
+                        <li><a onClick={() => setBrandFilter('Lenovo')}>Lenovo</a></li>
+                        <li><a onClick={() => setBrandFilter('Oppo')}>Oppo</a></li>
+                        <li><a onClick={() => setBrandFilter('Xiaomi')}>Xiaomi</a></li>
+                        <li><a onClick={() => setBrandFilter('Tag Heuer')}>Tag Heuer</a></li>
+                        <li><a onClick={() => setBrandFilter('Asus')}>Asus</a></li>
+                        <li><a onClick={() => setBrandFilter('OnePlus')}>OnePlus</a></li>
+                        <li><a onClick={() => setBrandFilter('HP')}>HP</a></li>
+                        <li><a onClick={() => setBrandFilter('Sony')}>Sony</a></li>
+                        <li><a onClick={() => setBrandFilter('Razer')}>Razer</a></li>
+                        <li><a onClick={() => setBrandFilter('Acer')}>Acer</a></li>
+                        <li><a onClick={() => setBrandFilter('Alienware')}>Alienware</a></li>
+                        <li><a onClick={() => setBrandFilter('Fitbit')}>Fitbit</a></li>
+                        <li><a onClick={() => setBrandFilter('Fossil')}>Fossil</a></li>
+                        <li><a onClick={() => setBrandFilter('Dell')}>Dell</a></li>
+                        <li><a onClick={() => setBrandFilter('MSI')}>MSI</a></li>
+                        <li><a onClick={() => setBrandFilter('Nokia')}>Nokia</a></li>
                     </ul>
                 </div>
                 {/* category filter */}
                 <div className="dropdown">
                     <div tabIndex={0} role="button" className="btn m-1">Category</div>
                     <ul tabIndex={0} className="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
-                        <li><a>Phone</a></li>
-                        <li><a>Laptop</a></li>
-                        <li><a>Watch</a></li>
-                        <li><a>Tablet</a></li>
+                        <li><a onClick={() => setCategoryFilter('phone')}>Phone</a></li>
+                        <li><a onClick={() => setCategoryFilter('laptop')}>Laptop</a></li>
+                        <li><a onClick={() => setCategoryFilter('tablets')}>Tablets</a></li>
+                        <li><a onClick={() => setCategoryFilter('watches')}>Watches</a></li>
                     </ul>
                 </div>
-                {/* Price range filter */}
+                {/* price range filter */}
                 <div className="dropdown">
                     <div tabIndex={0} role="button" className="btn m-1">Price Range</div>
                     <ul tabIndex={0} className="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
-                        <li><a>Item 1</a></li>
-                        <li><a>Item 2</a></li>
+                        <li><a onClick={() => setPriceRangeFilter('0-100')}>$0 - $100</a></li>
+                        <li><a onClick={() => setPriceRangeFilter('100-500')}>$100 - $500</a></li>
+                        <li><a onClick={() => setPriceRangeFilter('500-1000')}>$500 - $1000</a></li>
+                        <li><a onClick={() => setPriceRangeFilter('1000-1500')}>$1000 - $1500</a></li>
+                        <li><a onClick={() => setPriceRangeFilter('1500-2000')}>$1500 - $2000</a></li>
+                        <li><a onClick={() => setPriceRangeFilter('2000-3000')}>$2000 - $3000</a></li>
                     </ul>
                 </div>
             </div>
