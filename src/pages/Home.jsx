@@ -13,23 +13,24 @@ const Home = () => {
     const [selectedBrand, setSelectedBrand] = useState('Brand');
     const [selectedCategory, setSelectedCategory] = useState('Category');
     const [selectedPriceRange, setSelectedPriceRange] = useState('Price Range');
+    const [searchQuery, setSearchQuery] = useState('');
 
     useEffect(() => {
         const getData = async () => {
-            const query = `page=${currentPage}&size=${itemsPerPage}&brand=${brandFilter}&category=${categoryFilter}&priceRange=${priceRangeFilter}`;
+            const query = `page=${currentPage}&size=${itemsPerPage}&brand=${brandFilter}&category=${categoryFilter}&priceRange=${priceRangeFilter}&search=${searchQuery}`;
             const { data } = await axios(`${import.meta.env.VITE_API_URL}/all-products?${query}`);
             setProducts(data);
         }
         getData();
-    }, [currentPage, itemsPerPage, brandFilter, categoryFilter, priceRangeFilter]);
+    }, [currentPage, itemsPerPage, brandFilter, categoryFilter, priceRangeFilter, searchQuery]);
 
     useEffect(() => {
         const getCount = async () => {
-            const { data } = await axios(`${import.meta.env.VITE_API_URL}/products-count?brand=${brandFilter}&category=${categoryFilter}&priceRange=${priceRangeFilter}`);
+            const { data } = await axios(`${import.meta.env.VITE_API_URL}/products-count?brand=${brandFilter}&category=${categoryFilter}&priceRange=${priceRangeFilter}&search=${searchQuery}`);
             setCount(data.count);
         }
         getCount();
-    }, [brandFilter, categoryFilter, priceRangeFilter]);
+    }, [brandFilter, categoryFilter, priceRangeFilter, searchQuery]);
 
     const numberOfPages = Math.ceil(count / itemsPerPage);
     const pages = [...Array(numberOfPages).keys()].map(element => element + 1);
@@ -56,13 +57,17 @@ const Home = () => {
         setSelectedPriceRange(priceRange || 'Price Range');
     };
 
-
+    const handleSearch = (e) => {
+        e.preventDefault();
+        setCurrentPage(1);
+        setSearchQuery(e.target.elements.search.value.trim());
+    }
     return (
         <div className="container mx-auto">
             {/* search input */}
             <div className="mt-8">
-                <form className="flex items-center">
-                    <input type="text" placeholder="Type here" className="input input-bordered w-full max-w-xs rounded-tr-none rounded-br-none" />
+                <form onSubmit={handleSearch} className="flex items-center">
+                    <input name="search" type="text" placeholder="Type here" className="input input-bordered w-full max-w-xs rounded-tr-none rounded-br-none" />
                     <input className="btn bg-red-400 rounded-tl-none rounded-bl-none" type="submit" value="Search" />
                 </form>
             </div>
