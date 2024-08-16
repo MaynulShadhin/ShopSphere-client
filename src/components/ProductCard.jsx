@@ -3,7 +3,7 @@ const ProductCard = ({item}) => {
 
     return (
         <div>
-            <div className="card border-2 border-base w-96 mt-12">
+            <div className="card border-2 border-base w-96 mt-12 p-4">
             <figure>
                 <img className='h-[300px]'
                     src={item.image}
@@ -12,9 +12,8 @@ const ProductCard = ({item}) => {
             <div className="card-body">
                 <h2 className="card-title">{item.name}</h2>
                 <p>{item.description}</p>
-                <div className="card-actions justify-end">
-                    <button className="btn btn-primary">Learn now!</button>
-                </div>
+                <p className='font-semibold'>Price: <span>{item.price}</span>$</p>
+                <p className='badge badge-outline'>{item.brand}</p>
             </div>
         </div>
         </div>
