@@ -1,4 +1,4 @@
-#ShopSphere
+# ShopSphere
 LiveLink: (https://shopsphere-46a6b.web.app/)
 
 ## About
